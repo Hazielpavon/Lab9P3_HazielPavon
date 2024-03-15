@@ -64,7 +64,8 @@ void GestorVentas::listarConciertos() {
 }
 //guardo los datos en el archivo 
 void GestorVentas::guardarConciertosCSV() {
-	ofstream archivo("Conciertos.csv");
+	ofstream archivo("Conciertos.csv", ios::app);// esta linea soluciono que borraba el codigo, el trunc no me sirvio 
+	// pa que no digan que lo saque de gpt https://stackoverflow.com/questions/10359702/c-filehandling-difference-between-iosapp-and-iosate
 	if (!archivo.is_open()) {
 		cout << "No se pudo abrir el archivo Conciertos.csv" << endl;
 		return;
@@ -74,10 +75,10 @@ void GestorVentas::guardarConciertosCSV() {
 		archivo << concierto->getnombreBanda() << "," << concierto->getprecioEntrada() << "," << concierto->getfechaConcierto() << "," << concierto->getcodigo() << ","
 			<< concierto->gettotalRecaudado() << "," << concierto->getentradasVendidas() << endl;
 	}
-
+	cout << "Se guardaron los datos correctamente" << endl;
 	archivo.close();
-
 }
+
 void GestorVentas::cargarConciertosCSV() {
 	ifstream archivo("Conciertos.csv");
 	if (!archivo.is_open()) {
@@ -102,5 +103,7 @@ void GestorVentas::cargarConciertosCSV() {
 		Concierto* concierto = new Concierto(nombreBanda, precioEntrada, fechaConcierto, codigo, totalRecaudado, entradasVendidas);
 		ConciertosDisponibles.push_back(concierto);
 	}
+	cout << "Se cargo el archivo correctamente!" << endl; 
+
 	archivo.close();
 }

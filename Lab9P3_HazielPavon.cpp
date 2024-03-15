@@ -8,7 +8,9 @@ void ejercicio1() {
 	bool vali = false;
 	int contador = 0;
 	bool vali2 = false;
+	bool archivocargado = false;
 	GestorVentas* gestor = new GestorVentas();
+	Concierto* concierto = new Concierto(); 
 	while (seguir) {
 		cout << "Bienvenido Al Menu de Conciertos" << endl;
 		cout << "--------------------------------" << endl;
@@ -23,6 +25,7 @@ void ejercicio1() {
 		cin >> opcion;
 		switch (opcion) {
 		case 1: {
+			vali2 = false;
 			string nombreBanda = " ", fechaConcierto = " ";
 			double precioEntrada = 0.0, totalRecaudado = 0;
 			int codigo = 0, entradasVendidas = 0;
@@ -32,31 +35,45 @@ void ejercicio1() {
 			cout << "Ingrese el precio de la entrada: ";
 			cin >> precioEntrada;
 			cout << "Ingrese la fecha del concierto (dd/mm/aaaa): ";
+			cin.ignore();
 			getline(cin, fechaConcierto);
-			cout << endl; 
-			int contador = gestor->getConciertosDisponibles().size();
-			while (!vali2 && contador > 0) {
-				cout << "Ingrese el codigo: ";
-				codigo = 0;
-				cin >> codigo;
-				if (codigo > 999 && codigo < 10000 && gestor->getConciertosDisponibles()[contador]->getcodigo() != codigo) {
-					vali2 = true; 
+			int contador = 0;
+			if (contador != 0) {
+				while (contador < gestor->getConciertosDisponibles().size()) {
+					cout << "Ingrese el codigo: ";
+					int codigo2 = 0;
+					cin >> codigo2;
+					if (codigo2 > 999 && codigo2 < 10000 && gestor->getConciertosDisponibles()[contador]->getcodigo() != codigo2) {
+						codigo = codigo2; 
+					}
+					else {
+						cout << "El codigo existe en otra banda o el codigo no cumple con la condicion que debe ser mayor a 1000 y menor a 9999" << endl;
+					}
+					contador++;
 				}
-				else {
-					cout << "El codigo existe en otra banda o el codigo no cumple con la condicion que debe ser mayor a 1000 y menor a 9999" << endl; 
-				}
-				contador--; 
 			}
-			Concierto* concierto = new Concierto(nombreBanda, precioEntrada, fechaConcierto, codigo, totalRecaudado, entradasVendidas);
-			gestor->agregarConcierto(concierto);
-			delete concierto;
-			vali = true;
-			contador++;
-			break;
-		}
+			else {
+				while (!vali2 ) {
+					cout << "Ingrese el codigo: ";
+					codigo = 0;
+					cin >> codigo;
+					if (codigo > 999 && codigo < 10000) {
+						vali2 = true;
+					}
+					else {
+						cout << "El codigo existe en otra banda o el codigo no cumple con la condicion que debe ser mayor a 1000 y menor a 9999" << endl;
+					}
+				}
+			}
+				concierto = new Concierto(nombreBanda, precioEntrada, fechaConcierto, codigo, totalRecaudado, entradasVendidas);
+				gestor->agregarConcierto(concierto);
+				vali = true;
+				contador++;
+				break;
+			}
 		case 2: {
 			// eliminando y validar si ya creo conciertos antes de querer hacer alguna opcion 
-			if (vali) {
+			if (vali || archivocargado) {
 				gestor->listarConciertos();
 				cout << "Ingrese el indice del concierto que quiere eliminar" << endl;
 				int indice;
@@ -79,7 +96,7 @@ void ejercicio1() {
 		}
 		case 3: {
 			// pido datos y vendo entradas 
-			if (vali) {
+			if (vali || archivocargado) {
 				gestor->listarConciertos();
 				cout << "Ingrese el indice del concierto al que desea vender entradas" << endl;
 				int indice;
@@ -100,7 +117,7 @@ void ejercicio1() {
 			break;
 		}
 		case 4: {
-			if (vali) {
+			if (vali || archivocargado) {
 				gestor->listarConciertos();
 			}
 			else {
@@ -111,10 +128,11 @@ void ejercicio1() {
 		case 5: {
 			gestor->cargarConciertosCSV();
 			vali = true;
+			archivocargado = true;
 			break;
 		}
 		case 6: {
-			if (vali) {
+			if (vali || archivocargado) {
 				gestor->guardarConciertosCSV();
 			}
 			else {
@@ -123,18 +141,18 @@ void ejercicio1() {
 			break;
 		}
 		case 7: {
-			seguir = false;
 			cout << "Saliendo..." << endl;
+			seguir = false;
 			break;
 		}
 		default:
 			cout << "Ingrese una opcion correcta" << endl;
 		}
+		}
+		delete gestor;
+		delete concierto;
 	}
-	delete gestor; 
-
-}
-int main()
-{
-	ejercicio1();
-}
+	int main()
+	{
+		ejercicio1();
+	}
