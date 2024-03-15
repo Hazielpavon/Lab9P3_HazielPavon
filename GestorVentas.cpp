@@ -1,6 +1,11 @@
 #include "GestorVentas.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include "Concierto.h"
+
 GestorVentas::GestorVentas()
 {
 }
@@ -73,21 +78,29 @@ void GestorVentas::guardarConciertosCSV() {
 	archivo.close();
 
 }
-// aca abro los datos y los almaceno en el vector 
 void GestorVentas::cargarConciertosCSV() {
 	ifstream archivo("Conciertos.csv");
 	if (!archivo.is_open()) {
 		cout << "No se pudo abrir el archivo" << endl;
+		return;
 	}
-	else {
-		string nombre, fecha;
-		double entrada, total;
-		int codigo, ventas;
-		while (archivo >> nombre >> entrada >> fecha >> codigo >> total >> ventas) {
-			Concierto* concierto = new Concierto(nombre, entrada, fecha, codigo, total, entrada);
-			ConciertosDisponibles.push_back(concierto);
-		}
-		archivo.close();
-		cout << "Se han cargado los archivos correctamente!" << endl;
+	string linea;
+	while (getline(archivo, linea)) {
+		istringstream stream(linea);  
+		string nombreBanda, fechaConcierto;
+		double precioEntrada, totalRecaudado;
+		int codigo, entradasVendidas;
+		getline(stream, nombreBanda, ',');
+		stream >> precioEntrada;
+		stream.ignore();
+		getline(stream, fechaConcierto, ',');
+		stream >> codigo;
+		stream.ignore();
+		stream >> totalRecaudado;
+		stream.ignore();
+		stream >> entradasVendidas;
+		Concierto* concierto = new Concierto(nombreBanda, precioEntrada, fechaConcierto, codigo, totalRecaudado, entradasVendidas);
+		ConciertosDisponibles.push_back(concierto);
 	}
+	archivo.close();
 }
