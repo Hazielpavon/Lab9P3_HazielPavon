@@ -1,5 +1,4 @@
 #pragma once
-
 #include <memory.h>
 #include <vector>
 #include "Concierto.h"
@@ -19,4 +18,3 @@ public:
 	void guardarConciertosCSV();
 	void cargarConciertosCSV();
 };
-

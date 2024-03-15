@@ -11,26 +11,21 @@ private :
 	double totalRecaudado;
 	int entradasVendidas; 
 public: 
-
 	Concierto(string nombreBanda, double precioEntrada, string fechaConcierto, int codigo, double totalRecaudado, int entradasVendidas); 
 	Concierto(); 
 	~Concierto(); 
-	string getnombreBanda() const; 
+	string getnombreBanda() ; 
 	void setnombreBanda(string nombreBanda); 
-	double getprecioEntrada() const; 
+	double getprecioEntrada() ; 
 	void setprecioEntrada(double precioEntrada);
-	string getfechaConcierto() const;
+	string getfechaConcierto() ;
 	void setfechaConcierto(string fechaConcierto);
 	int getcodigo() const; 
 	void setcodigo(int codigo);
-	double gettotalRecaudado() const; 
+	double gettotalRecaudado() ; 
 	void settotalRecaudado(double totalRecaudado);
-	int getentradasVendidas()const;
+	int getentradasVendidas();
 	void setentradasVendidas(int entradasVendidas);
-
-
-
 };
-
 // string getNombre()const; 
 //void setNombre(string _nombre);
